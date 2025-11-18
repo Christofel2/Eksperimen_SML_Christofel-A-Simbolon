@@ -76,4 +76,4 @@ if __name__ == "__main__":
         output_path=output_path
     )
 
-    print("🚀 Preprocessing complete!")
+    print("Preprocessing complete!")
