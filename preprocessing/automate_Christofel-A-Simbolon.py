@@ -19,6 +19,11 @@ def preprocess_data(data, target_column, preprocessor_path, output_path):
     # Definisikan kolom numerik yang akan dipakai
     num_cols = ["income", "loan_amount", "points", "credit_score", "years_employed"]
 
+        # Split data menjadi train dan test set 
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, stratify=y, test_size=0.2, random_state=42
+    )
+
     # Buat pipeline untuk preprocessing data numerik
     num_transformer = Pipeline(steps=[
         ("imputer", SimpleImputer(strategy="mean")),     
@@ -28,7 +33,7 @@ def preprocess_data(data, target_column, preprocessor_path, output_path):
         transformers=[
             ("num", num_transformer, num_cols)
         ],
-        remainder="drop"
+        remainder="passthrough"
     )
 
     # Set output ke pandas DataFrame jika memungkinkan
@@ -37,10 +42,6 @@ def preprocess_data(data, target_column, preprocessor_path, output_path):
     except:
         pass
 
-    # Split data menjadi train dan test set 
-    X_train, X_test, y_train, y_test = train_test_split(
-        X, y, stratify=y, test_size=0.2, random_state=42
-    )
 
     X_train_t = preprocessor.fit_transform(X_train)
     X_test_t = preprocessor.transform(X_test)
